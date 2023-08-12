@@ -56,7 +56,7 @@ public class EmployerController {
     @GetMapping("/getResponseByEmployerWithPage")
     public ResponseEntity<Page<Response>> getResponseByEmployerWithPage(@RequestParam(value = "pageNumber", defaultValue = "0") Integer pageNumber,
                                                                         @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                                        @RequestParam(value = "employerId") Long employerId){
+                                                                        @RequestParam(value = "employerId") Long employerId) {
         Page<Response> responseByEmployer = responseService.getResponseByEmployerWithPage(employerId, PageRequest.of(pageNumber, pageSize));
         return new ResponseEntity<>(responseByEmployer, HttpStatus.OK);
     }

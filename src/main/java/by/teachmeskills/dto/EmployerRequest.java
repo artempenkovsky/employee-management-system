@@ -11,5 +11,7 @@ public class EmployerRequest {
     private String email;
     private String name;
     private String website;
+    private String username;
+    private String password;
 }
 

@@ -1,7 +1,7 @@
 package by.teachmeskills.service.impl;
 
 import by.teachmeskills.model.User;
-import by.teachmeskills.repository.RoleRepository;
+import by.teachmeskills.model.UserRole;
 import by.teachmeskills.repository.UserRepository;
 import by.teachmeskills.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +11,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
     public final UserRepository userRepository;
-    public final RoleRepository roleRepository;
 
     @Override
     public Optional<User> findByUsername(String username) {
@@ -28,7 +27,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void createNewUser(User user) {
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
+        Set<UserRole> roles = user.getRoles();
+        roles.add(UserRole.ROLE_USER);
         userRepository.save(user);
     }
 
@@ -40,6 +40,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoles().stream().map(role ->
-                        new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
+                        new SimpleGrantedAuthority(role.name())).collect(Collectors.toList()));
     }
 }

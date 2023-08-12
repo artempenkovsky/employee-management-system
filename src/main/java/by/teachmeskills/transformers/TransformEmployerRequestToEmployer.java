@@ -11,6 +11,8 @@ public class TransformEmployerRequestToEmployer {
         employer.setEmail(employerRequest.getEmail());
         employer.setName(employerRequest.getName());
         employer.setWebsite(employerRequest.getWebsite());
+        employer.setUsername(employerRequest.getUsername());
+        employer.setPassword(employerRequest.getPassword());
         return employer;
     }
 }
