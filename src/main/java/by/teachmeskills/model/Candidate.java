@@ -13,10 +13,10 @@ import javax.persistence.*;
 @Setter
 
 @Entity(name="candidates")
-public class Candidate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Candidate extends User {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;

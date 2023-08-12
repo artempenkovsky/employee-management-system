@@ -17,12 +17,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtils {
-    @Value("qweqrt234f324fdsfwe53gsgsdw34")
+    @Value("qwerty")
     private String secret;
     @Value("20m")
     private Duration jwtLifeTime;
-    public String generateToken(UserDetails userDetails){
-        Map<String,Object> claims = new HashMap<>();
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -38,16 +39,20 @@ public class JwtTokenUtils {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
-    public Claims getClaimsFromToken(String token){
-        return Jwts.parser()
+
+    public Claims getClaimsFromToken(String token) {
+        Claims body = (Claims) Jwts.parser()
                 .setSigningKey(secret)
-                .parseClaimsJwt(token)
+                .parse(token)
                 .getBody();
+        return body;
     }
-    public String getUsername(String token){
+
+    public String getUsername(String token) {
         return getClaimsFromToken(token).getSubject();
     }
-    public List<String> getRoles (String token){
+
+    public List<String> getRoles(String token) {
         return getClaimsFromToken(token).get("roles", List.class);
     }
 
