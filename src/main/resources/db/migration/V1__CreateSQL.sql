@@ -46,26 +46,26 @@ create table vacancies
     primary key (id)
 );
 alter table if exists candidates
-    drop constraint if exists UK_nm2ss73jii2hdupmpphl6agry;
+    drop constraint if exists UK_candidate_email;
 
 alter table if exists candidates
-    add constraint UK_nm2ss73jii2hdupmpphl6agry unique (email);
+    add constraint UK_candidate_email unique (email);
 alter table if exists employers
-    drop constraint if exists UK_qc5dry5qy5prsgul22acrt8am;
+    drop constraint if exists UK_employer_email;
 
 alter table if exists employers
-    add constraint UK_qc5dry5qy5prsgul22acrt8am unique (email);
+    add constraint UK_employer_email unique (email);
 alter table if exists candidates
-    add constraint FKpwx8qcbu3swnypnelf5b8db9j foreign key (id) references users;
+    add constraint FK_candidate_user foreign key (id) references users;
 alter table if exists employers
-    add constraint FKnnl4ba0tc831e25ufip4ek2yq foreign key (id) references users;
+    add constraint FK_employer_user foreign key (id) references users;
 alter table if exists responses
-    add constraint FK667ojn3xgbfw2jl1gyuw66pu3 foreign key (candidate_id) references candidates;
+    add constraint FK_response_candidate foreign key (candidate_id) references candidates;
 alter table if exists responses
-    add constraint FK9lipsp15yhtdsuyln7dr3k5hm foreign key (vacancy_id) references vacancies;
+    add constraint FK_role_vacancy foreign key (vacancy_id) references vacancies;
 alter table if exists roles
-    add constraint FK97mxvrajhkq19dmvboprimeg1 foreign key (user_id) references users;
+    add constraint FK_vacancy_user foreign key (user_id) references users;
 alter table if exists vacancies
-    add constraint FKoitkfsx04o9py3xgyvbtuxbqf foreign key (employer_id) references employers;
+    add constraint FK_vacancy_employer foreign key (employer_id) references employers;
 create sequence hibernate_sequence start 1 increment 1;
 

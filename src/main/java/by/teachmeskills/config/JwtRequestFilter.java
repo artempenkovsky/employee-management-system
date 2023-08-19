@@ -36,15 +36,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtils.getUsername(jwt);
             } catch (ExpiredJwtException e) {
                 log.debug("Время жизни токена вышло");
+                filterChain.doFilter(request, response);
             } catch (SignatureException e) {
                 log.debug("Подпись неправильная");
+                filterChain.doFilter(request, response);
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
-                    jwtTokenUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                    jwtTokenUtils.getRoles(jwt)
+                            .stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList())
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
