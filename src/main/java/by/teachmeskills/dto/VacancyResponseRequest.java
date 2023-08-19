@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ResponseRequest {
+public class VacancyResponseRequest {
     private Long candidateId;
     private Long vacancyId;
     private String coverLetter;

@@ -12,4 +12,6 @@ public class CandidateRequest {
     private String firstName;
     private String lastName;
     private String resume;
+    private String username;
+    private String password;
 }

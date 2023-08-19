@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -22,11 +21,6 @@ public class VacancyServiceImpl implements VacancyService {
     public VacancyServiceImpl(VacancyRepository vacancyRepository, TransformVacancyRequestToVacancy transformer) {
         this.vacancyRepository = vacancyRepository;
         this.transformer = transformer;
-    }
-
-    @Override
-    public List<Vacancy> getAllVacancies() {
-        return vacancyRepository.findAll();
     }
 
     @Override
@@ -44,20 +38,21 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<Vacancy> getActiveVacancyByEmployer(Long employerId) {
-        return getVacancyByEmployer(employerId)
-                .stream()
-                .filter(vacancy -> vacancy.isActive())
-                .collect(Collectors.toList());
+        return vacancyRepository.findAllByEmployerIdAndActiveIsTrue(employerId);
     }
 
     @Override
-    public Vacancy changeVacancyStatus(Long vacancyId) {
-        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElse(null);
-        if (vacancy != null) {
-            vacancy.setActive(!vacancy.isActive());
-            return vacancyRepository.save(vacancy);
-        }
-        return null;
+    public Vacancy setVacancyStatusTrue(Long vacancyId) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new IllegalArgumentException("Vacancy is missed!"));
+        vacancy.setActive(true);
+        return vacancyRepository.save(vacancy);
+    }
+
+    @Override
+    public Vacancy setVacancyStatusFalse(Long vacancyId) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow(() -> new IllegalArgumentException("Vacancy is missed!"));
+        vacancy.setActive(false);
+        return vacancyRepository.save(vacancy);
     }
 
     @Override
@@ -74,16 +69,12 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public Page<Vacancy> getAllByEmployerIdAndStatusIsActive(Long employerId, Pageable pageable) {
-        Page<Vacancy> vacancyPage = vacancyRepository.findAllByEmployerIdAndStatusIsActive(employerId, pageable);
+        Page<Vacancy> vacancyPage = vacancyRepository.findAllByEmployerIdAndActiveIsTrue(employerId, pageable);
         return vacancyPage;
     }
 
     @Override
     public Employer getEmployerByVacancyId(Long vacancyId) {
-        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElse(null);
-        if(vacancy !=null){
-            return vacancy.getEmployer();
-        }
-        return null;
+        return vacancyRepository.findById(vacancyId).orElseThrow(() -> new IllegalArgumentException("Vacancy is missed!")).getEmployer();
     }
 }

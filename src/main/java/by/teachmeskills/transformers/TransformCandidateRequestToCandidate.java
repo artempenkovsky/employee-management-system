@@ -12,6 +12,8 @@ public class TransformCandidateRequestToCandidate {
         candidate.setResume(candidateRequest.getResume());
         candidate.setLastName(candidateRequest.getLastName());
         candidate.setFirstName(candidateRequest.getFirstName());
+        candidate.setUsername(candidateRequest.getUsername());
+        candidate.setPassword(candidateRequest.getPassword());
         return candidate;
     }
 }

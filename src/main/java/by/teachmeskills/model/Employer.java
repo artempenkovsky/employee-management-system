@@ -12,11 +12,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 
-@Entity(name="employers")
-public class Employer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Entity(name = "employers")
+public class Employer extends User {
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -25,5 +22,4 @@ public class Employer {
     private String name;
 
     private String website;
-
 }

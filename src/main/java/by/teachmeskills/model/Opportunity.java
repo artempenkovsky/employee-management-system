@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 
 @Entity(name="responses")
-public class Response {
+public class Opportunity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +31,6 @@ public class Response {
     private String coverLetter;
 
     @Column(name = "response_time", nullable = false)
-    private LocalDateTime responseTime = LocalDateTime.now();
+    private Instant responseTime = Instant.now();
 }
 
